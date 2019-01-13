@@ -13,39 +13,35 @@ export default class CardForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      numberValue: "",
-      validValue: ""
+      number: "",
+      valid: "",
+      name: ""
     };
   }
 
   onChangeNumber = e => {
-    let val = e.target.value;
-    if (val.length <= 19) {
-      // to stop user writing in input when he pass 19 characters
-      this.props.getNumber(val);
-      if (val.length === 4 || val.length === 9 || val.length === 14) {
-        this.setState({ numberValue: val + " " });
-      } else {
-        this.setState({ numberValue: val });
-      }
-    }
-  };
-  onChangeValid = e => {
-    let val = e.target.value;
-    if (val.length <= 5) {
-      // to stop user writing in input when he pass 19 characters
-      if (val.length === 2) {
-        this.setState({ validValue: val + "/" });
-      } else {
-        this.setState({ validValue: val });
-      }
+    this.setState({ number: e.target.Value });
+    console.log(e.target.Value);
 
-      this.props.getValid(val);
-    }
+    this.submitToParent();
   };
   onChangeName = e => {
-    let val = e.target.value;
-    this.props.getName(val);
+    this.setState({ name: e.target.Value });
+    console.log(e.target.Value);
+    this.submitToParent();
+  };
+  onChangeValue = e => {
+    this.setState({ valid: e.target.Value });
+    this.submitToParent();
+  };
+  submitToParent = () => {
+    let obj = {
+      name: this.state.name,
+      valid: this.state.valid,
+      number: this.state.number
+    };
+    console.log("obj////:" + obj);
+    this.props.getData(obj);
   };
 
   render() {
@@ -58,8 +54,7 @@ export default class CardForm extends React.Component {
             name=""
             id=""
             placeholder=" "
-            readOnly={this.state.readOnly}
-            value={this.state.numberValue}
+            value={this.state.number}
             onChange={this.onChangeNumber}
           />
         </FormGroup>
@@ -70,7 +65,7 @@ export default class CardForm extends React.Component {
             name=""
             id=""
             placeholder=""
-            //  value={this.state.nameValue}
+            value={this.state.name}
             onChange={this.onChangeName}
           />
         </FormGroup>
@@ -80,9 +75,8 @@ export default class CardForm extends React.Component {
             type="text"
             name=""
             id=""
-            readOnly={false}
             placeholder=""
-            value={this.state.validValue}
+            value={this.state.valid}
             onChange={this.onChangeValid}
           />
         </FormGroup>
